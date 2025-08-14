@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38701ff5300bbe243819fb5c2bfdb9e0, type: 3}
+  m_Name: FootstepBindings
+  m_EditorClassIdentifier: 
+  Bindings:
+  - Mat: {fileID: 2100000, guid: 00c5b5b5a6bd45c43b2b2f05428ccc3b, type: 2}
+    FootstepClips:
+    - {fileID: 8300000, guid: f61e65cc25989724dae64228f92f3943, type: 3}
+    - {fileID: 8300000, guid: f6e64625ee93353469e31d22b1728938, type: 3}
+    - {fileID: 8300000, guid: 0e70909bcae441d4a9a5ae5ed034636b, type: 3}
+    - {fileID: 8300000, guid: 817cf7decef9a1e4e8e87b7ca1cb98c4, type: 3}
+    - {fileID: 8300000, guid: 4c295aa7ed75d9940ac51f65bcd38def, type: 3}
+    - {fileID: 8300000, guid: 1b18b90e53893c543976c0eaa61b0f90, type: 3}
+    SoftstepClips:
+    - {fileID: 8300000, guid: 9739858405fd8814f92ea0df9ecd1160, type: 3}
+    - {fileID: 8300000, guid: dbf83d80e615c814aa1cb40ebe17b079, type: 3}
+    - {fileID: 8300000, guid: ec6a7cc4a9f6aa141958bc86a56bc01a, type: 3}
+    - {fileID: 8300000, guid: c11b743be1f73cc439fd8279644c597f, type: 3}
+    RunstepClips: []
+    Volume: 0.54
+    Pitch: 1
+    PitchVariation: 0.1
