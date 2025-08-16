@@ -4,8 +4,8 @@ using UnityEngine;
 public class BaseEntity : NetworkBehaviour
 {
     protected Rigidbody rb;
-    public bool AutoDetectHead = true;
-    public Transform Head;
+    public bool AutoDetectCameraHolder = true;
+    public Transform CameraHolder;
     public Camera Cam;
     protected AudioListener audioListener;
 
@@ -42,11 +42,11 @@ public class BaseEntity : NetworkBehaviour
         Cam = gameObject.FindObject("Camera").GetComponent<Camera>();
         audioListener = Cam.gameObject.GetComponent<AudioListener>();
 
-        if (AutoDetectHead)
+        if (AutoDetectCameraHolder)
         {
-            Head = gameObject.FindObject("Head").transform;
+            CameraHolder = gameObject.FindObject("Camera_Holder").transform;
         }
-        headXRotation = Head.localRotation.x;
+        headXRotation = CameraHolder.localRotation.x;
 
         TargetSpeed = WalkSpeed;
         TargetAcceleration = WalkAcceleration;
@@ -60,7 +60,7 @@ public class BaseEntity : NetworkBehaviour
     {
         transform.rotation *= Quaternion.Euler(0, LookInput.x * LookSensitivity * Time.deltaTime, 0);
         headXRotation = Mathf.Clamp(headXRotation - LookInput.y * LookSensitivity * Time.deltaTime, -90, 90);
-        Head.transform.localRotation = Quaternion.Euler(headXRotation, Head.transform.localRotation.eulerAngles.y, Head.transform.localRotation.eulerAngles.z);
+        CameraHolder.transform.localRotation = Quaternion.Euler(headXRotation, CameraHolder.transform.localRotation.eulerAngles.y, CameraHolder.transform.localRotation.eulerAngles.z);
     }
 
     public virtual void FixedUpdate()

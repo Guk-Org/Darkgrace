@@ -1,31 +1,35 @@
 using DG.Tweening;
+using Mirror;
 using UnityEngine;
 
-public class Leaning : MonoBehaviour
+public class Leaning : NetworkBehaviour
 {
-    public bool AutoDetectNeck = true;
-    public Transform neck;
+    public bool AutoDetectMedian = true;
+    public Transform median;
 
+    [SyncVar]
     public int LeanInput;
     public float LeanTime = 0.35f;
     public float LeanAmount = 20f;
 
     void Start()
     {
-        if (AutoDetectNeck)
+        if (AutoDetectMedian)
         {
-            neck = gameObject.FindObject("Neck").transform;
-        }    
+            median = gameObject.FindObject("Median").transform;
+        }
+
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+        SetLeanValue(LeanInput);
     }
 
-    
-    void Update()
-    {
-        neck.DOLocalRotate(new Vector3(neck.localRotation.x, neck.localRotation.y, LeanAmount * LeanInput), LeanTime).SetEase(Ease.Linear);
-    }
-
+    [Command]
     public void SetLeanValue(int val)
     {
         LeanInput = val;
+        median.DOLocalRotate(new Vector3(median.localRotation.x, median.localRotation.y, LeanAmount * LeanInput), LeanTime).SetEase(Ease.OutSine);
     }
 }

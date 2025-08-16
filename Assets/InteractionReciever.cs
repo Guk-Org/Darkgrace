@@ -7,6 +7,7 @@ public class InteractionReciever : MonoBehaviour
     public List<Interactable> InteractablesInRange = new List<Interactable>();
     public float Range = 5;
     public LayerMask GroundLayer;
+    public Interactable PrimaryInteractable;
 
     public void OnEnable()
     {
@@ -43,5 +44,10 @@ public class InteractionReciever : MonoBehaviour
                 }
             }
         }
+
+        InteractablesInRange.Sort((a, b) =>
+        Vector3.Distance(transform.position, a.transform.position)
+        .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
     }
+
 }

@@ -11,14 +11,56 @@ public class LightGroup : NetworkBehaviour
 
     public bool OffOnAwake = true;
 
-    private void Start()
+    [SyncVar(hook = nameof(OnChanged))]
+    private bool isOn;
+
+    private void Awake()
     {
-        foreach (Light l in gameObject.GetComponentsInChildren<Light>())
+        foreach (var l in GetComponentsInChildren<Light>(includeInactive: true))
         {
-            myLights.Add(l, l.intensity);
-            if (OffOnAwake)
+            myLights[l] = l.intensity;
+        }
+    }
+
+
+    public override void OnStartServer()
+    {
+        if (OffOnAwake)
+        {
+            foreach (var kv in myLights)
             {
-                l.intensity = 0;
+                kv.Key.intensity = 0f;
+            }
+            isOn = false;
+        }
+    }
+
+    public override void OnStartClient()
+    {
+        ChangeLights(isOn, false);
+    }
+
+    private void OnChanged(bool oldVal, bool newVal)
+    {
+        ChangeLights(newVal, true);
+    }
+
+    private void ChangeLights(bool turnOn, bool shouldTween)
+    {
+        foreach (var kv in myLights)
+        {
+            var l = kv.Key;
+            var target = turnOn ? kv.Value : 0f;
+            l.DOKill(complete: false);
+
+            if (shouldTween)
+            {
+                var t = turnOn ? FadeInTime : FadeOutTime;
+                l.DOIntensity(target, t);
+            }
+            else
+            {
+                l.intensity = target;
             }
         }
     }
@@ -26,18 +68,7 @@ public class LightGroup : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void Toggle()
     {
-        foreach (var keyValuePair in myLights)
-        {
-            Light l = keyValuePair.Key;
-            float intensity = keyValuePair.Value;
-            if (l.intensity != intensity)
-            {
-                l.DOIntensity(intensity, FadeInTime);
-            }
-            else
-            {
-                l.DOIntensity(0, FadeOutTime);
-            }
-        }
+        isOn = !isOn;
     }
+
 }

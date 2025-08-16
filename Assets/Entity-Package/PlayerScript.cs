@@ -10,21 +10,36 @@ public class PlayerScript : BasePlayer
     private Canvas interactionIndicatorCanvas;
     private Camera uiCamera;
 
+    private Transform median;
+
     private AudioSource localSoundSource;
 
     public AudioClip InteractionIndicatorAppear;
     public AudioClip InteractionIndicatorDisappear;
 
+
     public override void Start()
     {
         base.Start();
-        interactionReciever = GetComponent<InteractionReciever>();
+        interactionReciever = CameraHolder.GetComponent<InteractionReciever>();
         uiCamera = gameObject.FindObject("UI Camera").GetComponent<Camera>();
         localSoundSource = gameObject.FindObject("Local Sound Source").GetComponent<AudioSource>();
+        median = gameObject.FindObject("Median").transform;
+        gameObject.FindObject("Upper_Torso").transform.parent = median;
+        
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
+        gameObject.FindObject("Head").GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+        gameObject.FindObject("Neck").GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
     }
 
     public override void Update()
     {
+        gameObject.FindObject("Neck").transform.rotation = CameraHolder.transform.rotation;
+
         base.Update();
 
         if (!isLocalPlayer)
@@ -44,7 +59,8 @@ public class PlayerScript : BasePlayer
                     interactionIndicatorCanvas.worldCamera = uiCamera;
                     AudioHelper.PlayOneshot(InteractionIndicatorAppear, localSoundSource);
                 }
-                interactionIndicatorCanvas.transform.position = interactable.transform.position;
+                interactionIndicator.transform.parent = interactable.transform;
+                interactionIndicator.transform.localPosition = Vector3.zero;
             }
 
             if (Input.GetButtonDown("Interact"))

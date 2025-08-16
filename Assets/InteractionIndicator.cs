@@ -12,5 +12,6 @@ public class InteractionIndicator : MonoBehaviour
     private void Update()
     {
         transform.forward = canvas.worldCamera.transform.forward;
+        transform.rotation = canvas.worldCamera.transform.rotation;
     }
 }
