@@ -39,7 +39,7 @@ public class BaseEntity : NetworkBehaviour
     public virtual void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Cam = GetComponentInChildren<Camera>();
+        Cam = gameObject.FindObject("Camera").GetComponent<Camera>();
         audioListener = Cam.gameObject.GetComponent<AudioListener>();
 
         if (AutoDetectHead)
