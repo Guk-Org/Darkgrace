@@ -16,14 +16,14 @@ public class MyNetworkManager : NetworkManager
         // 1) assign transport _before_ any StartClient/StartServer
 #if UNITY_SERVER
             transport      = web;
-            networkAddress = "games.guk.ca";
+            networkAddress = "darkgrace.guk.ca";
             base.Awake();
             StartServer();
 #elif UNITY_EDITOR
         if (AlwaysConnectToWebServer)
         {
             transport = web;
-            networkAddress = "games.guk.ca";
+            networkAddress = "darkgrace.guk.ca";
             base.Awake();
             StartClient();
         }
@@ -39,7 +39,7 @@ public class MyNetworkManager : NetworkManager
 
 #elif UNITY_WEBGL
        transport = web;
-       networkAddress = "games.guk.ca";
+       networkAddress = "darkgrace.guk.ca";
        web.clientWebsocketSettings.ClientPortOption = WebsocketPortOption.SpecifyPort;
        web.clientWebsocketSettings.CustomClientPort = 443;
        base.Awake();
