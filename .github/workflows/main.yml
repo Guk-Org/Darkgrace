@@ -40,7 +40,7 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: html5
-          ITCH_GAME: romy-bustle
+          ITCH_GAME: darkgrace
           ITCH_USER: Destalta
           PACKAGE: build/WebGL
 
@@ -85,4 +85,4 @@ jobs:
               -H "CF-Access-Client-Id: ${{ secrets.CF_ACCESS_CLIENT_ID }}" \
               -H "CF-Access-Client-Secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}" \
               -H "Content-Type: application/json" \
-              -d '{"artifact_id": "${{ steps.upload-artifact.outputs.artifact-id }}"}'
+              -d '{"artifact_id": "${{ steps.upload-artifact.outputs.artifact-id }}", "repo_name": "Darkgrace"}'
