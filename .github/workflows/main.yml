@@ -1,0 +1,88 @@
+name: Actions 😎
+
+on: [push]
+
+jobs:
+  build-webgl:
+    name: Build WebGL ✨
+    runs-on: xl-arc-runner-dind
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Cache
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+
+      # Output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Build
+          path: build
+
+      # Upload to Itch
+      - uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: html5
+          ITCH_GAME: romy-bustle
+          ITCH_USER: Destalta
+          PACKAGE: build/WebGL
+
+  build-linux-server:
+      name: Build Linux Server 🖥️
+      runs-on: xl-arc-runner-dind
+      steps:
+        # Checkout
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        # Cache
+        - uses: actions/cache@v4
+          with:
+            path: Library
+            key: Library-LinuxServer-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+            restore-keys: |
+              Library-LinuxServer-
+              Library-
+
+        # Build
+        - name: Build Linux Server
+          uses: game-ci/unity-builder@v4
+          env:
+            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          with:
+            targetPlatform: StandaloneLinux64
+            customParameters: '-standaloneBuildSubtarget Server'
+
+        # Output
+        - uses: actions/upload-artifact@v4
+          id: upload-artifact
+          with:
+            name: Build-LinuxServer
+            path: build
+
+        - name: Deploy Linux Server
+          run: |
+            curl -X POST "${{ secrets.WEBHOOK_URL }}" \
+              -H "CF-Access-Client-Id: ${{ secrets.CF_ACCESS_CLIENT_ID }}" \
+              -H "CF-Access-Client-Secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}" \
+              -H "Content-Type: application/json" \
+              -d '{"artifact_id": "${{ steps.upload-artifact.outputs.artifact-id }}"}'
