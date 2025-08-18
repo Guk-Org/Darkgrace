@@ -7,6 +7,6 @@ public class LightSwitch : Interactable
     public override void Interact()
     {
         base.Interact();
-        LightGroup.Toggle();
+        LightGroup.CmdToggle();
     }
 }

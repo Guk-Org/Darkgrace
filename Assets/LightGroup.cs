@@ -66,7 +66,7 @@ public class LightGroup : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void Toggle()
+    public void CmdToggle()
     {
         isOn = !isOn;
     }

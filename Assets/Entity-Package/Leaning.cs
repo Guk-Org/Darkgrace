@@ -23,11 +23,11 @@ public class Leaning : NetworkBehaviour
         {
             return;
         }
-        SetLeanValue(LeanInput);
+        CmdSetLeanValue(LeanInput);
     }
 
     [Command]
-    public void SetLeanValue(int val)
+    public void CmdSetLeanValue(int val)
     {
         LeanInput = val;
         median.DOLocalRotate(new Vector3(median.localRotation.x, median.localRotation.y, LeanAmount * LeanInput), LeanTime).SetEase(Ease.OutSine);

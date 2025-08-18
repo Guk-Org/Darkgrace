@@ -38,7 +38,8 @@ public class PlayerScript : BasePlayer
 
     public override void Update()
     {
-        gameObject.FindObject("Neck").transform.rotation = CameraHolder.transform.rotation;
+        gameObject.FindObject("Neck").transform.parent = gameObject.FindObject("Neck_Holder").transform;
+        gameObject.FindObject("Neck_Holder").transform.forward = CameraHolder.transform.up;
 
         base.Update();
 
@@ -96,11 +97,11 @@ public class PlayerScript : BasePlayer
         {
             if (leaning.LeanInput != 1)
             {
-                leaning.SetLeanValue(1);
+                leaning.CmdSetLeanValue(1);
             }
             else
             {
-                leaning.SetLeanValue(0);
+                leaning.CmdSetLeanValue(0);
             }
         }
 
@@ -108,11 +109,11 @@ public class PlayerScript : BasePlayer
         {
             if (leaning.LeanInput != -1)
             {
-                leaning.SetLeanValue(-1);
+                leaning.CmdSetLeanValue(-1);
             }
             else
             {
-                leaning.SetLeanValue(0);
+                leaning.CmdSetLeanValue(0);
             }
 
         }
