@@ -7,12 +7,12 @@ public class Leaning : NetworkBehaviour
     public bool AutoDetectMedian = true;
     public Transform median;
 
-    [SyncVar]
+    [SyncVar(hook = nameof(OnLeanInputChanged))]
     public int LeanInput;
     public float LeanTime = 0.35f;
     public float LeanAmount = 20f;
 
-    void Start()
+    void Awake()
     {
         if (AutoDetectMedian)
         {
@@ -30,6 +30,10 @@ public class Leaning : NetworkBehaviour
     public void CmdSetLeanValue(int val)
     {
         LeanInput = val;
-        median.DOLocalRotate(new Vector3(median.localRotation.x, median.localRotation.y, LeanAmount * LeanInput), LeanTime).SetEase(Ease.OutSine);
+    }
+
+    public void OnLeanInputChanged(int oldVal, int newVal)
+    {
+        median.DOLocalRotate(new Vector3(median.localRotation.x, median.localRotation.y, LeanAmount * newVal), LeanTime).SetEase(Ease.OutSine);
     }
 }

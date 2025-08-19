@@ -1006,6 +1006,10 @@ PrefabInstance:
       value: EntityMesh
       objectReference: {fileID: 0}
     - target: {fileID: 3236175625629181821, guid: d723dd27bd752a647afd1339c2a01211, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3236175625629181821, guid: d723dd27bd752a647afd1339c2a01211, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.84448165
       objectReference: {fileID: 0}
