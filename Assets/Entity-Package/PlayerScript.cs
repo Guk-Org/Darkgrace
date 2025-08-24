@@ -18,9 +18,9 @@ public class PlayerScript : BasePlayer
     public AudioClip InteractionIndicatorDisappear;
 
 
-    public override void Awake()
+    public override void Start()
     {
-        base.Awake();
+        base.Start();
         interactionReciever = CameraHolder.GetComponent<InteractionReciever>();
         uiCamera = gameObject.FindObject("UI Camera").GetComponent<Camera>();
         localSoundSource = gameObject.FindObject("Local Sound Source").GetComponent<AudioSource>();

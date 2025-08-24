@@ -3,9 +3,9 @@ using UnityEngine;
 public class BasePlayer : Entity
 {
 
-    public override void Awake()
+    public override void Start()
     {
-        base.Awake();
+        base.Start();
 
         if (!isLocalPlayer)
         {
