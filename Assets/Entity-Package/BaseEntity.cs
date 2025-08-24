@@ -36,7 +36,7 @@ public class BaseEntity : NetworkBehaviour
 
 
 
-    public virtual void Start()
+    public virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
         Cam = gameObject.FindObject("Camera").GetComponent<Camera>();
