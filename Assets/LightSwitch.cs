@@ -65,5 +65,15 @@ public class LightSwitch : Interactable
             soundSource.PlayOneShot(OnSound);
         }
     }
-    
+
+    public void OnDrawGizmosSelected()
+    {
+        foreach (LightBulb l in LightGroup)
+        {
+            if (l.gameObject)
+            {
+                Gizmos.DrawLine(transform.position, l.gameObject.transform.position);
+            }
+        }
+    }
 }

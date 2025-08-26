@@ -52,15 +52,12 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   OffOnAwake: 1
-  FadeInTime: 0.04
-  FadeOutTime: 0.04
   StartSounds:
   - {fileID: 8300000, guid: 997a2afe64a3a22458a057bbb15a5f27, type: 3}
   - {fileID: 8300000, guid: d8ee9f4b527dec248b6ae1abb6077ba1, type: 3}
   OriginIntensity: 0
   AlreadyPlayedStartSound: 0
   Power: 0
-  IsOn: 0
 --- !u!114 &4825921583110225993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,19 +175,19 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: db903dae291de08498409dc5fa7b0194, type: 3}
   m_Resource: {fileID: 8300000, guid: db903dae291de08498409dc5fa7b0194, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 0.589
+  m_PlayOnAwake: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0.5
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 20
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
