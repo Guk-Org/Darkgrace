@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 3605692954063004399}
   - component: {fileID: 824456653877403477}
   m_Layer: 0
-  m_Name: Local Sound Source
+  m_Name: Sound Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -12,7 +12,7 @@ public class PlayerScript : BasePlayer
 
     private Transform median;
 
-    private AudioSource localSoundSource;
+    private AudioSource soundSource;
 
     public AudioClip InteractionIndicatorAppear;
     public AudioClip InteractionIndicatorDisappear;
@@ -23,7 +23,7 @@ public class PlayerScript : BasePlayer
         base.Start();
         interactionReciever = CameraHolder.GetComponent<InteractionReciever>();
         uiCamera = gameObject.FindObject("UI Camera").GetComponent<Camera>();
-        localSoundSource = gameObject.FindObject("Local Sound Source").GetComponent<AudioSource>();
+        soundSource = gameObject.FindObject("Sound Source").GetComponent<AudioSource>();
         median = gameObject.FindObject("Median").transform;
         gameObject.FindObject("Upper_Torso").transform.parent = median;
         
@@ -58,7 +58,7 @@ public class PlayerScript : BasePlayer
                     interactionIndicator = Instantiate(InteractionIndicatorPrefab);
                     interactionIndicatorCanvas = interactionIndicator.GetComponentInChildren<Canvas>();
                     interactionIndicatorCanvas.worldCamera = uiCamera;
-                    AudioHelper.PlayOneshot(InteractionIndicatorAppear, localSoundSource);
+                    AudioHelper.PlayOneshot(InteractionIndicatorAppear, soundSource);
                 }
                 interactionIndicator.transform.parent = interactable.transform;
                 interactionIndicator.transform.localPosition = Vector3.zero;
@@ -88,7 +88,7 @@ public class PlayerScript : BasePlayer
         {
             if (interactionIndicator)
             {
-                AudioHelper.PlayOneshot(InteractionIndicatorDisappear, localSoundSource);
+                AudioHelper.PlayOneshot(InteractionIndicatorDisappear, soundSource);
                 Destroy(interactionIndicator);
             }
         }
