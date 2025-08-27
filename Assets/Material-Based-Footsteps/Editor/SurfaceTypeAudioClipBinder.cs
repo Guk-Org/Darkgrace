@@ -2,19 +2,19 @@
 using UnityEngine;
 using System.IO;
 
-public class MaterialBasedFootstepsEditor : EditorWindow
+public class SurfaceTypeAudioClipBinder : EditorWindow
 {
-    private MaterialAudioClipBindingDatabase bindingAsset;
+    private SurfaceTypeAudioClipDatabase bindingAsset;
     private Vector2 scroll;
-    private const string assetPath = "Assets/Editor/FootstepBindings.asset"; // adjust path as needed
+    private const string assetPath = "Assets/Editor/SurfaceTypeAudioClip.asset"; // adjust path as needed
     private SerializedObject serializedAsset;
 
 
-    [MenuItem("Tools/Material Based Footsteps Utility Panel")]
+    [MenuItem("Tools/Surface Type Audio Clip Binder")]
     public static void ShowExample()
     {
-        MaterialBasedFootstepsEditor window = GetWindow<MaterialBasedFootstepsEditor>();
-        window.titleContent = new GUIContent("Material Based Footsteps");
+        SurfaceTypeAudioClipBinder window = GetWindow<SurfaceTypeAudioClipBinder>();
+        window.titleContent = new GUIContent("Surface Type Audio Clip Binder");
     }
 
     private void OnEnable()
@@ -41,7 +41,7 @@ public class MaterialBasedFootstepsEditor : EditorWindow
         for (int i = 0; i < bindingsProp.arraySize; i++)
         {
             SerializedProperty bindingProp = bindingsProp.GetArrayElementAtIndex(i);
-            SerializedProperty matProp = bindingProp.FindPropertyRelative("Mat");
+            SerializedProperty surfaceType = bindingProp.FindPropertyRelative("SurfaceType");
             SerializedProperty footstepClips = bindingProp.FindPropertyRelative("FootstepClips");
             SerializedProperty softstepClips = bindingProp.FindPropertyRelative("SoftstepClips");
             SerializedProperty runstepClips = bindingProp.FindPropertyRelative("RunstepClips");
@@ -51,34 +51,21 @@ public class MaterialBasedFootstepsEditor : EditorWindow
 
             EditorGUILayout.BeginVertical("box");
 
-            // Draw material texture preview
-            Material mat = matProp.objectReferenceValue as Material;
-            if (mat != null && mat.mainTexture != null)
+            if (surfaceType == null)
             {
-                Texture texture = mat.mainTexture ?? mat.GetTexture("_BaseMap") ?? mat.GetTexture("_MainTex");
-
-                float previewSize = 80f;
-                float padding = 10f;
-                float x = EditorGUIUtility.currentViewWidth - previewSize - padding;
-                Rect rect = new Rect(x, GUILayoutUtility.GetRect(0, previewSize).y, previewSize, previewSize);
-
-                if (Event.current.type == EventType.Repaint)
-                {
-                    GUI.DrawTexture(rect, texture, ScaleMode.ScaleToFit);
-                }
-
-                
+                EditorGUILayout.HelpBox("Binding is missing 'SurfaceType' field (name/case must match).", MessageType.Error);
             }
-
-
-            EditorGUILayout.PropertyField(matProp, new GUIContent("Material"));
+            else
+            {
+                EditorGUILayout.PropertyField(surfaceType, new GUIContent("Surface Type"));
+            }
 
             // Footsteps
             EditorGUILayout.PropertyField(footstepClips, new GUIContent("Footstep Clips"), true);
 
             if (GUILayout.Button("▶ Play"))
             {
-                var obj = bindingProp.serializedObject.targetObject as MaterialAudioClipBindingDatabase;
+                var obj = bindingProp.serializedObject.targetObject as SurfaceTypeAudioClipDatabase;
                 var actualBinding = obj.Bindings[i];
                 var valid = actualBinding.FootstepClips.FindAll(c => c != null);
                 if (valid.Count > 0)
@@ -92,7 +79,7 @@ public class MaterialBasedFootstepsEditor : EditorWindow
 
             if (GUILayout.Button("▶ Play"))
             {
-                var obj = bindingProp.serializedObject.targetObject as MaterialAudioClipBindingDatabase;
+                var obj = bindingProp.serializedObject.targetObject as SurfaceTypeAudioClipDatabase;
                 var actualBinding = obj.Bindings[i];
                 var valid = actualBinding.SoftstepClips.FindAll(c => c != null);
                 if (valid.Count > 0)
@@ -106,7 +93,7 @@ public class MaterialBasedFootstepsEditor : EditorWindow
 
             if (GUILayout.Button("▶ Play"))
             {
-                var obj = bindingProp.serializedObject.targetObject as MaterialAudioClipBindingDatabase;
+                var obj = bindingProp.serializedObject.targetObject as SurfaceTypeAudioClipDatabase;
                 var actualBinding = obj.Bindings[i];
                 var valid = actualBinding.RunstepClips.FindAll(c => c != null);
                 if (valid.Count > 0)
@@ -147,10 +134,10 @@ public class MaterialBasedFootstepsEditor : EditorWindow
 
     private void LoadOrCreateAsset()
     {
-        bindingAsset = AssetDatabase.LoadAssetAtPath<MaterialAudioClipBindingDatabase>(assetPath);
+        bindingAsset = AssetDatabase.LoadAssetAtPath<SurfaceTypeAudioClipDatabase>(assetPath);
         if (bindingAsset == null)
         {
-            bindingAsset = ScriptableObject.CreateInstance<MaterialAudioClipBindingDatabase>();
+            bindingAsset = ScriptableObject.CreateInstance<SurfaceTypeAudioClipDatabase>();
             Directory.CreateDirectory(Path.GetDirectoryName(assetPath));
             AssetDatabase.CreateAsset(bindingAsset, assetPath);
             AssetDatabase.SaveAssets();

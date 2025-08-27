@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class MaterialAudioClipBinding
+public class SurfaceTypeAudioClipBinding
 {
-    public Material Mat;
+    public Material SurfaceType;
     public List<AudioClip> FootstepClips;
     public List<AudioClip> SoftstepClips;
     public List<AudioClip> RunstepClips;
@@ -13,8 +13,8 @@ public class MaterialAudioClipBinding
     public float PitchVariation = 0.1f;
 }
 
-[CreateAssetMenu(fileName = "FootstepBindings", menuName = "Footsteps/Binding Database")]
-public class MaterialAudioClipBindingDatabase : ScriptableObject
+[CreateAssetMenu(fileName = "SurfaceTypeAudioClip", menuName = "Footsteps/Binding Database")]
+public class SurfaceTypeAudioClipDatabase : ScriptableObject
 {
-    public List<MaterialAudioClipBinding> Bindings = new();
+    public List<SurfaceTypeAudioClipBinding> Bindings = new();
 }

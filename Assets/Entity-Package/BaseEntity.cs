@@ -4,11 +4,11 @@ using UnityEngine;
 public class BaseEntity : NetworkBehaviour
 {
     protected Rigidbody rb;
+    public GroundDetector Gd;
     public bool AutoDetectCameraHolder = true;
     public Transform CameraHolder;
     public Camera Cam;
     protected AudioListener audioListener;
-
 
     public Vector2 MoveInput;
     [Header("Running")]
@@ -23,11 +23,11 @@ public class BaseEntity : NetworkBehaviour
     public float AccelerationSmoothing = 5;
 
     public float CurrentSpeed;
+    [SyncVar]
     public float TargetSpeed;
     public float CurrentAcceleration;
+    [SyncVar]
     public float TargetAcceleration;
-
-
 
     public Vector2 LookInput;
     public float LookSensitivity = 155;
@@ -39,6 +39,7 @@ public class BaseEntity : NetworkBehaviour
     public virtual void Start()
     {
         rb = GetComponent<Rigidbody>();
+        Gd = GetComponentInChildren<GroundDetector>();
         Cam = gameObject.FindObject("Camera").GetComponent<Camera>();
         audioListener = Cam.gameObject.GetComponent<AudioListener>();
 
@@ -55,6 +56,8 @@ public class BaseEntity : NetworkBehaviour
         CurrentAcceleration = TargetAcceleration;
 
     }
+    
+
 
     public virtual void Update()
     {
@@ -64,6 +67,11 @@ public class BaseEntity : NetworkBehaviour
     }
 
     public virtual void FixedUpdate()
+    {
+        HandleMovement();
+    }
+
+    public virtual void HandleMovement()
     {
         CurrentSpeed = Mathf.Lerp(CurrentSpeed, TargetSpeed, SpeedSmoothing * Time.fixedDeltaTime);
         CurrentAcceleration = Mathf.Lerp(CurrentAcceleration, TargetAcceleration, AccelerationSmoothing * Time.fixedDeltaTime);
@@ -81,19 +89,5 @@ public class BaseEntity : NetworkBehaviour
         );
 
         rb.linearVelocity = new Vector3(newHoriz.x, currentVel.y, newHoriz.z);
-    }
-
-    public virtual void Movement()
-    {
-        if (!Running)
-        {
-            TargetSpeed = WalkSpeed;
-            TargetAcceleration = WalkAcceleration;
-        }
-        else
-        {
-            TargetSpeed = RunSpeed;
-            TargetAcceleration = RunAcceleration;
-        }
     }
 }

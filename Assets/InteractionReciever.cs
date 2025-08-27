@@ -1,11 +1,11 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionReciever : MonoBehaviour
+public class InteractionReciever : NetworkBehaviour
 {
     public List<Interactable> InteractablesInRange = new List<Interactable>();
-    public float Range = 5;
     public LayerMask GroundLayer;
     public Interactable PrimaryInteractable;
 
@@ -20,15 +20,20 @@ public class InteractionReciever : MonoBehaviour
         StopAllCoroutines();
     }
 
+    [Client]
     private IEnumerator CheckRoutine()
     {
         while (true)
         {
             yield return new WaitForSeconds(0.1f);
-            CheckForInteractables();
+            if (authority)
+            {
+                CheckForInteractables();
+            }
         }
     }
 
+    [Command(requiresAuthority = false)]
     public void CheckForInteractables()
     {
         InteractablesInRange.Clear();
@@ -36,7 +41,7 @@ public class InteractionReciever : MonoBehaviour
         for (int i = 0; i < interactablesFound.Length; i++)
         {
             Interactable interactable = interactablesFound[i];
-            if (Vector3.Distance(transform.position, interactable.gameObject.transform.position) <= Range)
+            if (Vector3.Distance(transform.position, interactable.gameObject.transform.position) <= interactable.Range)
             {
                 if (!Physics.Linecast(transform.position, interactable.gameObject.transform.position, GroundLayer))
                 {

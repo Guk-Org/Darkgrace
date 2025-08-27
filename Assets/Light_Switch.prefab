@@ -55,8 +55,25 @@ MonoBehaviour:
       m_Calls: []
   LightGroup:
   - {fileID: 0}
-  OnSound: {fileID: 8300000, guid: fb794316abf428b4a8c4984181a43e70, type: 3}
-  OffSound: {fileID: 8300000, guid: 9e32891991524874e90febfcaf90a2f7, type: 3}
+  OnSounds:
+  - {fileID: 8300000, guid: bc472e1c580fb9449a905b6b7f391588, type: 3}
+  - {fileID: 8300000, guid: dcae3d2decbbb5d49a593070eae5820d, type: 3}
+  - {fileID: 8300000, guid: b0b0a951b62459b418364e47c19e92cc, type: 3}
+  - {fileID: 8300000, guid: 7d40800c6ac0ffe4fa64ec33ae554fb3, type: 3}
+  OffSounds:
+  - {fileID: 8300000, guid: da52fa5e2653fea43942cb9a2dbb5c38, type: 3}
+  - {fileID: 8300000, guid: 734a3cd4431316e4fb3ecc3bfe0b0e6c, type: 3}
+  - {fileID: 8300000, guid: d015ec8454a84a24dbbc1ddde54b7d9f, type: 3}
+  - {fileID: 8300000, guid: 505cbe5e2a458ca488913849d9bc2eed, type: 3}
+  QuietOnSounds:
+  - {fileID: 8300000, guid: a5ee854cf0d14f54cb951503ea80895f, type: 3}
+  - {fileID: 8300000, guid: 266f6f4078e06d24ea25d30db706f8c2, type: 3}
+  - {fileID: 8300000, guid: b21e5c8c13ac15043bea1065525423f3, type: 3}
+  QuietOffSounds:
+  - {fileID: 8300000, guid: 958302d4c4175b04f8241125a8174b52, type: 3}
+  - {fileID: 8300000, guid: 57d42874e2d756e489744f40ffaef7c4, type: 3}
+  - {fileID: 8300000, guid: 7cb7f58aac1b280499a8dcbd63155399, type: 3}
+  - {fileID: 8300000, guid: a4542f156d731f9429bfbf6f634b7d5d, type: 3}
   Switched: 0
 --- !u!82 &6856376180114168168
 AudioSource:

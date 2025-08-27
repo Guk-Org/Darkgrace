@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 public class BasePlayer : Entity
@@ -31,7 +32,24 @@ public class BasePlayer : Entity
 
         LookInput.x = Input.GetAxis("Mouse X");
         LookInput.y = Input.GetAxis("Mouse Y");
+    }
 
-        
+    [Command]
+    public void CmdSetMoveInput(float x, float y)
+    {
+        MoveInput.x = x;
+        MoveInput.y = y;
+    }
+
+    [Command]
+    public void CmdSetLookInput(float x, float y)
+    {
+        LookInput.x = x;
+        LookInput.y = y;
+    }
+
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
     }
 }

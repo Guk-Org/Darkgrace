@@ -2,14 +2,19 @@ using UnityEngine;
 
 public class Entity : BaseEntity
 {
-    protected SlowWalking slowWalking;
-    protected Leaning leaning;
+    public SlowWalking SlowWalking;
+    public Leaning Leaning;
 
     public override void Start()
     {
         base.Start();
-        leaning = GetComponent<Leaning>();
-        slowWalking = GetComponent<SlowWalking>();
+        Leaning = GetComponent<Leaning>();
+        SlowWalking = GetComponent<SlowWalking>();
+    }
+
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
     }
 
 }

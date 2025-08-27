@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf20f6134ac94074089d6dbfdfeeedab, type: 3}
-  m_Name: FootstepBindings
+  m_Script: {fileID: 11500000, guid: 38701ff5300bbe243819fb5c2bfdb9e0, type: 3}
+  m_Name: MaterialSurfaceType
   m_EditorClassIdentifier: 
   Bindings:
-  - Mat: {fileID: 0}
-    FootstepClips: []
-    SoftstepClips: []
-    RunstepClips: []
-    Volume: 0
-    Pitch: 0
-    PitchVariation: 0
+  - Mat: {fileID: 2100000, guid: ce78fc9a3a88c62489727578c09defe2, type: 2}
+    SurfaceType: 0

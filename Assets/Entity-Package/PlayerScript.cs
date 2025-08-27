@@ -1,10 +1,12 @@
 using DG.Tweening;
+using Mirror;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 
 public class PlayerScript : BasePlayer
 {
-    private InteractionReciever interactionReciever;
+    public InteractionReciever InteractionReciever;
     public GameObject InteractionIndicatorPrefab;
     private GameObject interactionIndicator;
     private Canvas interactionIndicatorCanvas;
@@ -12,21 +14,26 @@ public class PlayerScript : BasePlayer
 
     private Transform median;
 
-    private AudioSource soundSource;
+    public AudioSource SoundSource;
 
     public AudioClip InteractionIndicatorAppear;
     public AudioClip InteractionIndicatorDisappear;
+
+    [SyncVar]
+    public Interactable PrimaryInteractable;
 
 
     public override void Start()
     {
         base.Start();
-        interactionReciever = CameraHolder.GetComponent<InteractionReciever>();
+        InteractionReciever = CameraHolder.GetComponent<InteractionReciever>();
         uiCamera = gameObject.FindObject("UI Camera").GetComponent<Camera>();
-        soundSource = gameObject.FindObject("Sound Source").GetComponent<AudioSource>();
+        SoundSource = gameObject.FindObject("Sound Source").GetComponent<AudioSource>();
         median = gameObject.FindObject("Median").transform;
         gameObject.FindObject("Upper_Torso").transform.parent = median;
-        
+
+        StartCoroutine(HandleInteractablesRoutine());
+
         if (!isLocalPlayer)
         {
             return;
@@ -34,6 +41,24 @@ public class PlayerScript : BasePlayer
 
         gameObject.FindObject("Head").GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
         gameObject.FindObject("Neck").GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+
+    }
+
+    public IEnumerator HandleInteractablesRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.1f);
+            if (isServer)
+            {
+                HandleInteractables();
+            }
+        }
+    }
+
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
     }
 
     public override void Update()
@@ -48,9 +73,8 @@ public class PlayerScript : BasePlayer
             return;
         }
 
-        if (interactionReciever.InteractablesInRange.Count > 0)
+        if (PrimaryInteractable)
         {
-            Interactable interactable = interactionReciever.InteractablesInRange[0];
             if (InteractionIndicatorPrefab != null)
             {
                 if (interactionIndicator == null)
@@ -58,15 +82,15 @@ public class PlayerScript : BasePlayer
                     interactionIndicator = Instantiate(InteractionIndicatorPrefab);
                     interactionIndicatorCanvas = interactionIndicator.GetComponentInChildren<Canvas>();
                     interactionIndicatorCanvas.worldCamera = uiCamera;
-                    AudioHelper.PlayOneshot(InteractionIndicatorAppear, soundSource);
+                    AudioHelper.PlayOneshot(InteractionIndicatorAppear, SoundSource);
                 }
-                interactionIndicator.transform.parent = interactable.transform;
+                interactionIndicator.transform.parent = PrimaryInteractable.transform;
                 interactionIndicator.transform.localPosition = Vector3.zero;
             }
 
             if (Input.GetButtonDown("Interact"))
             {
-                interactable.Interact();
+                PrimaryInteractable.Interact();
                 if (interactionIndicatorCanvas != null)
                 {
                     interactionIndicatorCanvas.transform.DOScale(Vector3.one * 0.001f, 0.05f);
@@ -88,46 +112,62 @@ public class PlayerScript : BasePlayer
         {
             if (interactionIndicator)
             {
-                AudioHelper.PlayOneshot(InteractionIndicatorDisappear, soundSource);
+                AudioHelper.PlayOneshot(InteractionIndicatorDisappear, SoundSource);
                 Destroy(interactionIndicator);
             }
         }
 
         if (Input.GetButtonDown("Lean Left"))
         {
-            if (leaning.LeanInput != 1)
+            if (Leaning.LeanInput != 1)
             {
-                leaning.CmdSetLeanValue(1);
+                Leaning.CmdSetLeanValue(1);
             }
             else
             {
-                leaning.CmdSetLeanValue(0);
+                Leaning.CmdSetLeanValue(0);
             }
         }
 
         if (Input.GetButtonDown("Lean Right"))
         {
-            if (leaning.LeanInput != -1)
+            if (Leaning.LeanInput != -1)
             {
-                leaning.CmdSetLeanValue(-1);
+                Leaning.CmdSetLeanValue(-1);
             }
             else
             {
-                leaning.CmdSetLeanValue(0);
+                Leaning.CmdSetLeanValue(0);
             }
 
         }
 
         if (Input.GetButtonDown("Slow Walk"))
         {
-            if (!slowWalking.SlowWalk)
+            if (!SlowWalking.SlowWalk)
             {
-                slowWalking.SlowWalk = true;
+                SlowWalking.CmdSetSlowWalk(true);
             }
             else
             {
-                slowWalking.SlowWalk = false;
+                SlowWalking.CmdSetSlowWalk(false);
             }
         }
     }
+
+    [Server]
+    public void HandleInteractables()
+    {
+        if (InteractionReciever.InteractablesInRange.Count > 0)
+        {
+            PrimaryInteractable = InteractionReciever.InteractablesInRange[0];
+        }
+        else
+        {
+            PrimaryInteractable = null;
+        }
+    }
+
+    
+
 }

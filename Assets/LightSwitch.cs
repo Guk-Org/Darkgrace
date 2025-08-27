@@ -7,8 +7,14 @@ public class LightSwitch : Interactable
     public LightBulb[] LightGroup;
 
     private AudioSource soundSource;
-    public AudioClip OnSound;
-    public AudioClip OffSound;
+    public AudioClip[] OnSounds;
+    public AudioClip[] OffSounds;
+
+    public AudioClip[] QuietOnSounds;
+    public AudioClip[] QuietOffSounds;
+
+    public float RegularMaxDistance = 15;
+    public float QuietMaxDistance = 5;
 
     [SyncVar]
     public bool Switched;
@@ -42,27 +48,112 @@ public class LightSwitch : Interactable
     }
 
     [Command(requiresAuthority = false)]
-    public override void Interact()
+    public override void Interact(NetworkConnectionToClient sender = null)
     {
-        base.Interact();
+        if (!ValidateInteract(sender))
+        {
+            return;
+        }
+
+        BaseInteractMethod();
+
         foreach (LightBulb l in LightGroup)
         {
             l.Toggle();
         }
         Switched = !Switched;
-        RpcSwitchSound();
-    }
 
-    [ClientRpc]
-    public void RpcSwitchSound()
-    {
-        if (Switched)
+        PlayerScript player = sender.identity.gameObject.GetComponent<PlayerScript>();
+        
+
+        int offSoundIndex = Random.Range(0, OffSounds.Length);
+        int onSoundIndex = Random.Range(0, OnSounds.Length);
+
+        if (player && player.SlowWalking.SlowWalk)
         {
-            soundSource.PlayOneShot(OffSound);
+            offSoundIndex = Random.Range(0, QuietOffSounds.Length);
+            onSoundIndex = Random.Range(0, QuietOnSounds.Length);
+            QuietSwitchSound(offSoundIndex, onSoundIndex);
         }
         else
         {
-            soundSource.PlayOneShot(OnSound);
+            SwitchSound(offSoundIndex, onSoundIndex);
+        }
+    }
+
+    [Server]
+    public void SwitchSound(int offSoundIndex, int onSoundIndex)
+    {
+        if (Switched)
+        {
+            RpcPlayOffSound(offSoundIndex);
+        }
+        else
+        {
+            
+            RpcPlayOnSound(onSoundIndex);
+        }
+    }
+
+    [Server]
+    public void QuietSwitchSound(int offSoundIndex, int onSoundIndex)
+    {
+        if (Switched)
+        {
+            RpcPlayQuietOffSound(offSoundIndex);
+        }
+        else
+        {
+
+            RpcPlayQuietOnSound(onSoundIndex);
+        }
+    }
+
+    [ClientRpc]
+    void RpcPlayOnSound(int index)
+    {
+        index = Mathf.Clamp(index, 0, OnSounds.Length - 1);
+        var clip = OnSounds[index];
+        if (clip)
+        {
+            soundSource.maxDistance = RegularMaxDistance;
+            soundSource.PlayOneShot(clip);
+        }
+    }
+
+    [ClientRpc]
+    void RpcPlayOffSound(int index)
+    {
+        index = Mathf.Clamp(index, 0, OffSounds.Length - 1);
+        var clip = OffSounds[index];
+        if (clip)
+        {
+            soundSource.maxDistance = RegularMaxDistance;
+            soundSource.PlayOneShot(clip);
+        }
+    }
+
+    [ClientRpc]
+    void RpcPlayQuietOnSound(int index)
+    {
+        index = Mathf.Clamp(index, 0, QuietOnSounds.Length - 1);
+        var clip = QuietOnSounds[index];
+        if (clip)
+        {
+            soundSource.maxDistance = QuietMaxDistance;
+            soundSource.PlayOneShot(clip);
+        }
+    }
+
+    [ClientRpc]
+    void RpcPlayQuietOffSound(int index)
+    {
+        index = Mathf.Clamp(index, 0, QuietOffSounds.Length - 1);
+        var clip = QuietOffSounds[index];
+        if (clip)
+        {
+            soundSource.maxDistance = QuietMaxDistance;
+            soundSource.PlayOneShot(clip);
         }
     }
 
