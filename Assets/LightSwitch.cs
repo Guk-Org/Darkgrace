@@ -24,6 +24,22 @@ public class LightSwitch : Interactable
         soundSource = GetComponent<AudioSource>();
     }
 
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        
+    }
+
+    public void CmdReflectHearingDistance()
+    {
+        
+    }
+
     [Server]
     public void DetermineBeginningSwitchState()
     {
@@ -132,6 +148,7 @@ public class LightSwitch : Interactable
             soundSource.PlayOneShot(clip);
         }
     }
+
 
     [ClientRpc]
     void RpcPlayQuietOnSound(int index)

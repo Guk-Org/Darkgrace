@@ -53,6 +53,7 @@ MonoBehaviour:
   OnInteract:
     m_PersistentCalls:
       m_Calls: []
+  Range: 5
   LightGroup:
   - {fileID: 0}
   OnSounds:
@@ -74,6 +75,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 57d42874e2d756e489744f40ffaef7c4, type: 3}
   - {fileID: 8300000, guid: 7cb7f58aac1b280499a8dcbd63155399, type: 3}
   - {fileID: 8300000, guid: a4542f156d731f9429bfbf6f634b7d5d, type: 3}
+  RegularMaxDistance: 30
+  QuietMaxDistance: 10
   Switched: 0
 --- !u!82 &6856376180114168168
 AudioSource:
@@ -97,7 +100,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 15
+  MaxDistance: 40
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0

@@ -30,7 +30,7 @@ public class PlayerScript : BasePlayer
         uiCamera = gameObject.FindObject("UI Camera").GetComponent<Camera>();
         SoundSource = gameObject.FindObject("Sound Source").GetComponent<AudioSource>();
         median = gameObject.FindObject("Median").transform;
-        gameObject.FindObject("Upper_Torso").transform.parent = median;
+        gameObject.FindObject("Upper-Torso").transform.parent = median;
 
         StartCoroutine(HandleInteractablesRoutine());
 
