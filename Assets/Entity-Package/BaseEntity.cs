@@ -9,6 +9,7 @@ public class BaseEntity : NetworkBehaviour
     public Transform CameraHolder;
     public Camera Cam;
     protected AudioListener audioListener;
+    protected Animator animator;
 
     public Vector2 MoveInput;
     [Header("Running")]
@@ -42,6 +43,8 @@ public class BaseEntity : NetworkBehaviour
         Gd = GetComponentInChildren<GroundDetector>();
         Cam = gameObject.FindObject("Camera").GetComponent<Camera>();
         audioListener = Cam.gameObject.GetComponent<AudioListener>();
+        animator = GetComponentInChildren<Animator>();
+        //animator.Play("Idle");
 
         if (AutoDetectCameraHolder)
         {

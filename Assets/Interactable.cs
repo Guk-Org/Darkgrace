@@ -38,7 +38,7 @@ public class Interactable : NetworkBehaviour
             Debug.LogWarning(gameObject.name + ": Sender is null on interact");
             return false;
         }
-        if (Vector3.Distance(transform.position, sender.identity.gameObject.transform.position) <= Range)
+        if (Vector3.Distance(transform.position, sender.identity.gameObject.GetComponentInChildren<InteractionReciever>().transform.position) <= Range)
         {
             return true;
         }

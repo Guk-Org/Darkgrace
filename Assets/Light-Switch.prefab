@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6856376180114168168}
   - component: {fileID: 5439495996711633397}
   m_Layer: 0
-  m_Name: Light_Switch
+  m_Name: Light-Switch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
   OnInteract:
     m_PersistentCalls:
       m_Calls: []
-  Range: 5
+  Range: 2
   LightGroup:
   - {fileID: 0}
   OnSounds:

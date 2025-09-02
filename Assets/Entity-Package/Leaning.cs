@@ -22,6 +22,7 @@ public class Leaning : NetworkBehaviour
     public float LeanTime = 0.35f;
     public float LeanAmount = 20f;
 
+
     void Awake()
     {
         if (AutoDetectMedian)

@@ -9,9 +9,14 @@ public class SlowWalking : NetworkBehaviour
     [SyncVar]
     public bool SlowWalk = false;
 
+    private AudioSource soundSource;
+
+    public AudioClip[] UnSlowWalkSounds;
+
     public void Start()
     {
         entity = GetComponent<BaseEntity>();
+        soundSource = GetComponent<AudioSource>();
     }
 
     public void FixedUpdate()
@@ -26,6 +31,14 @@ public class SlowWalking : NetworkBehaviour
     public void CmdSetSlowWalk(bool val)
     {
         SlowWalk = val;
+        if (val == false)
+        {
+            if (UnSlowWalkSounds.Length > 0)
+            {
+                int index = Random.Range(0, UnSlowWalkSounds.Length);
+                RpcPlayUnSlowWalkSound(index);
+            }
+        }
     }
 
     [Server]
@@ -45,5 +58,11 @@ public class SlowWalking : NetworkBehaviour
             }
 
         }
+    }
+
+    [ClientRpc]
+    public void RpcPlayUnSlowWalkSound(int index)
+    {
+        soundSource.PlayOneShot(UnSlowWalkSounds[index]);
     }
 }

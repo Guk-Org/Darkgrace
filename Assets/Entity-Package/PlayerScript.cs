@@ -12,7 +12,7 @@ public class PlayerScript : BasePlayer
     private Canvas interactionIndicatorCanvas;
     private Camera uiCamera;
 
-    private Transform median;
+    
 
     public AudioSource SoundSource;
 
@@ -29,8 +29,7 @@ public class PlayerScript : BasePlayer
         InteractionReciever = CameraHolder.GetComponent<InteractionReciever>();
         uiCamera = gameObject.FindObject("UI Camera").GetComponent<Camera>();
         SoundSource = gameObject.FindObject("Sound Source").GetComponent<AudioSource>();
-        median = gameObject.FindObject("Median").transform;
-        gameObject.FindObject("Upper-Torso").transform.parent = median;
+        gameObject.FindObject("Upper-Torso").transform.parent = median.gameObject.FindObject("Upper-Torso-Corrector").transform;
 
         StartCoroutine(HandleInteractablesRoutine());
 
