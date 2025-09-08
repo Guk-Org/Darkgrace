@@ -44,7 +44,7 @@ public class BaseEntity : NetworkBehaviour
         Cam = gameObject.FindObject("Camera").GetComponent<Camera>();
         audioListener = Cam.gameObject.GetComponent<AudioListener>();
         animator = GetComponentInChildren<Animator>();
-        //animator.Play("Idle");
+        
 
         if (AutoDetectCameraHolder)
         {
@@ -67,6 +67,15 @@ public class BaseEntity : NetworkBehaviour
         transform.rotation *= Quaternion.Euler(0, LookInput.x * LookSensitivity * Time.deltaTime, 0);
         headXRotation = Mathf.Clamp(headXRotation - LookInput.y * LookSensitivity * Time.deltaTime, -90, 90);
         CameraHolder.transform.localRotation = Quaternion.Euler(headXRotation, CameraHolder.transform.localRotation.eulerAngles.y, CameraHolder.transform.localRotation.eulerAngles.z);
+
+        if (MoveInput.magnitude > 0.1f)
+        {
+            animator.Play("Walk");
+        }
+        else
+        {
+            animator.Play("Idle");
+        }
     }
 
     public virtual void FixedUpdate()
