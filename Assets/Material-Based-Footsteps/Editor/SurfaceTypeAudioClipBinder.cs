@@ -60,36 +60,8 @@ public class SurfaceTypeAudioClipBinder : EditorWindow
                 EditorGUILayout.PropertyField(surfaceType, new GUIContent("Surface Type"));
             }
 
-            // Footsteps
-            EditorGUILayout.PropertyField(footstepClips, new GUIContent("Footstep Clips"), true);
-
-            if (GUILayout.Button("▶ Play"))
-            {
-                var obj = bindingProp.serializedObject.targetObject as SurfaceTypeAudioClipDatabase;
-                var actualBinding = obj.Bindings[i];
-                var valid = actualBinding.FootstepClips.FindAll(c => c != null);
-                if (valid.Count > 0)
-                    PlayClip(valid[Random.Range(0, valid.Count)], actualBinding.Volume, actualBinding.Pitch, actualBinding.PitchVariation);
-                else
-                    Debug.LogWarning("No valid AudioClips assigned.");
-            }
-
-            // Softsteps
-            EditorGUILayout.PropertyField(softstepClips, new GUIContent("Softstep Clips"), true);
-
-            if (GUILayout.Button("▶ Play"))
-            {
-                var obj = bindingProp.serializedObject.targetObject as SurfaceTypeAudioClipDatabase;
-                var actualBinding = obj.Bindings[i];
-                var valid = actualBinding.SoftstepClips.FindAll(c => c != null);
-                if (valid.Count > 0)
-                    PlayClip(valid[Random.Range(0, valid.Count)], actualBinding.Volume, actualBinding.Pitch, actualBinding.PitchVariation);
-                else
-                    Debug.LogWarning("No valid AudioClips assigned.");
-            }
-
             // Runsteps
-            EditorGUILayout.PropertyField(runstepClips, new GUIContent("Runstep Clips"), true);
+            EditorGUILayout.PropertyField(footstepClips, new GUIContent("Runstep Clips"), true);
 
             if (GUILayout.Button("▶ Play"))
             {
@@ -101,6 +73,21 @@ public class SurfaceTypeAudioClipBinder : EditorWindow
                 else
                     Debug.LogWarning("No valid AudioClips assigned.");
             }
+
+            // Walksteps
+            EditorGUILayout.PropertyField(softstepClips, new GUIContent("Walkstep Clips"), true);
+
+            if (GUILayout.Button("▶ Play"))
+            {
+                var obj = bindingProp.serializedObject.targetObject as SurfaceTypeAudioClipDatabase;
+                var actualBinding = obj.Bindings[i];
+                var valid = actualBinding.WalkstepClips.FindAll(c => c != null);
+                if (valid.Count > 0)
+                    PlayClip(valid[Random.Range(0, valid.Count)], actualBinding.Volume, actualBinding.Pitch, actualBinding.PitchVariation);
+                else
+                    Debug.LogWarning("No valid AudioClips assigned.");
+            }
+
 
             EditorGUILayout.Slider(volProp, 0f, 1f);
             EditorGUILayout.Slider(pitchProp, 0.1f, 3f);

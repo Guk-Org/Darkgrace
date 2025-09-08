@@ -5,9 +5,8 @@ using System.Collections.Generic;
 public class SurfaceTypeAudioClipBinding
 {
     public Material SurfaceType;
-    public List<AudioClip> FootstepClips;
-    public List<AudioClip> SoftstepClips;
     public List<AudioClip> RunstepClips;
+    public List<AudioClip> WalkstepClips;
     public float Volume = 1f;
     public float Pitch = 1f;
     public float PitchVariation = 0.1f;

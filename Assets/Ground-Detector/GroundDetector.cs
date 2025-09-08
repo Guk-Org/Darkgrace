@@ -38,8 +38,8 @@ public class GroundDetector : NetworkBehaviour
             if (hits.Length > 0)
             {
                 willGround = true;
+                Material mat = hits[0].collider.transform.parent.GetComponentInChildren<MeshRenderer>().material;
             }
-            Material mat = hits[0].collider.GetComponent<MeshRenderer>().material;
         }
         IsGrounded = willGround;
     }
